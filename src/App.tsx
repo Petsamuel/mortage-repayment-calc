@@ -1,7 +1,7 @@
 import { Header, Text, ResultText } from "./components/Header";
 import { InputField, RadioField } from "./components/InputField";
 import { Button } from "./components/Button";
-import { useForm, SubmitHandler, set } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import "./App.css";
 import { calculateMortgage } from "./components/Logic";
