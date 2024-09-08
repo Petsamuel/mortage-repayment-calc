@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface InputFieldProps {
   type?: string;
   label?: string;
@@ -29,14 +31,17 @@ export const InputField = ({
           <div
             className={`${
               iconPosition === "front"
-                ? "p-2 bg-[--Slate-100]  absolute top-0 inset-y-0   left-[0.5px] rounded-l-sm items-center"
+                ? "p-2 bg-[--Slate-100]  absolute top-0 inset-y-0   left-[0.2px] rounded-l-sm items-center"
                 : ""
             }
                 ${
                   errors[name] ? "bg-red-600 text-white" : "ring-[--Slate-300]"
                 } `}
           >
-            {iconPosition === "front" && icon}
+            <p className="flex items-center justify-center">
+              {" "}
+              {iconPosition === "front" && icon}
+            </p>
           </div>
           <input
             type={type}
@@ -62,7 +67,11 @@ export const InputField = ({
                   errors[name] ? "bg-red-600 text-white" : "ring-[--Slate-300]"
                 } `}
           >
+            <p className="flex items-center justify-center">
+              {" "}
             {iconPosition === "back" && icon}
+            
+            </p>
           </div>
         </div>
       </div>
@@ -75,6 +84,8 @@ export const InputField = ({
 
 export const RadioField = ({ register, errors }: InputFieldProps) => {
   const radioButton = ["Repayment", "Interest Only"];
+  const [Radiobutton, setRadioButton] = useState("");
+
   return (
     <div className="text-[--Slate-500] font-medium">
       Mortgage Type
@@ -82,14 +93,19 @@ export const RadioField = ({ register, errors }: InputFieldProps) => {
         {radioButton.map((val, key) => (
           <div
             key={key}
-            className="flex rounded-sm p-2 border border-[--Slate-700] hover:border-[--color-primary] my-2 cursor-pointer text-[--Slate-900] font-medium"
-            onClick={() => null}
+            className={`flex rounded-sm p-2 border border-[--Slate-700] hover:border-[--color-primary] my-2 cursor-pointer text-[--Slate-900] font-medium ${
+              Radiobutton === val
+                ? "bg-[--color-primary1] border border-[--color-primary] "
+                : ""
+            }`}
+            onClick={() => setRadioButton(val)}
           >
             <input
               type="radio"
-              value={val}
-              className="mx-4 accent-[--color-primary]"
+              className="mx-4 accent-[--color-primary] border-inherit"
               {...register("mortgage", { required: true })}
+              checked={Radiobutton === val}
+              value={Radiobutton}
             />
             {val}
           </div>
