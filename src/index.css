@@ -9,7 +9,9 @@
   --Slate-300: hsl(203, 41%, 72%);
   --Slate-500: hsl(200, 26%, 54%);
   --Slate-700: hsl(200, 24%, 40%);
+  --Slate1-900: hsla(199, 53%, 13%, 0.699);
   --Slate-900: hsl(202, 55%, 16%);
+
   --Font-size: 16px;
   --font-light: 400;
   --font-heavy: 700;

@@ -1,23 +1,36 @@
-import { Header, Text } from "./components/Header";
+import { Header, Text, ResultText } from "./components/Header";
 import { InputField, RadioField } from "./components/InputField";
 import { Button } from "./components/Button";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, set } from "react-hook-form";
+import { useState } from "react";
 import "./App.css";
-
+import { calculateMortgage } from "./components/Logic";
 interface InputFieldProps {
   name: string;
   message: string;
+  MortgageAmount: number;
+  MortgageTerm: number;
+  InterestRate: number;
+  MortgageType: string;
 }
 
 function App() {
+  const [result, setResult] = useState({
+    monthlyPayment: 0,
+    numberOfPayments: 0,
+    totalRepay: 0,
+  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<InputFieldProps>();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onsubmit: SubmitHandler<InputFieldProps> = (data) => console.log(data);
-  console.log(errors);
+
+  const onsubmit: SubmitHandler<InputFieldProps> = (data) => {
+    setResult(calculateMortgage(data));
+  };
 
   return (
     <div className="mx-auto h-screen w-screen lg:flex justify-center">
@@ -35,6 +48,13 @@ function App() {
                   <button
                     type="reset"
                     className="text-[--Slate-500] font-light underline cursor-pointer"
+                    onClick={() =>
+                      setResult({
+                        monthlyPayment: 0,
+                        numberOfPayments: 0,
+                        totalRepay: 0,
+                      })
+                    }
                   >
                     {" "}
                     Clear all
@@ -52,10 +72,10 @@ function App() {
                     icon="£"
                     register={register}
                     errors={errors}
-                    name="Mortgage Amount"
+                    name="MortgageAmount"
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row lg:gap-4">
+                <div className="flex flex-col lg:flex-row lg:gap-4 flex-grow w-full">
                   <InputField
                     type="number"
                     label="Mortgage Term"
@@ -63,7 +83,7 @@ function App() {
                     icon="years"
                     register={register}
                     errors={errors}
-                    name="Mortgage Term"
+                    name="MortgageTerm"
                   />
                   <InputField
                     type="number"
@@ -72,11 +92,15 @@ function App() {
                     icon="%"
                     register={register}
                     errors={errors}
-                    name="Interest rate"
+                    name="InterestRate"
                   />
                 </div>
                 <div>
-                  <RadioField register={register} errors={errors} />
+                  <RadioField
+                    register={register}
+                    errors={errors}
+                    name="MortgageType"
+                  />
                 </div>
 
                 <div className="flex w-full items-center justify-center">
@@ -86,9 +110,13 @@ function App() {
             </div>
 
             {/* div2 */}
-            <div className="coloredbg p-4 rounded-r-xl lg:rounded-bl-[5rem]">
+            <div className="coloredbg p-4 lg:rounded-r-xl lg:rounded-bl-[5rem] lg:w-[35dvw]">
               <div className="justify-center flex mx-auto my-[2em] p-5">
-                <Text />
+                {result.numberOfPayments === 0 ? (
+                  <Text />
+                ) : (
+                  <ResultText result={result} />
+                )}
               </div>
             </div>
           </div>
